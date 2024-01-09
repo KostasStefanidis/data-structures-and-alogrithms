@@ -10,6 +10,9 @@ class ArrayList():
         # Under the hood python may allocate a bigger array
         self.array = [None] * self.capacity        
     
+    def __len__(self):
+        return self.length
+    
     def __getitem__(self, index: int):
         if index > self.length - 1:
             raise IndexError('ArrayList index out of bounds')
@@ -27,7 +30,7 @@ class ArrayList():
         return f"{self.__class__.__name__}: {self.array}"
     
     def __str__(self) -> str:
-        return self.__repr__()
+        return str([elem for elem in self.array if elem is not None])
     
     def __iter__(self):
         self.counter = 0
@@ -50,13 +53,13 @@ class ArrayList():
         for i in range(self.length):
             new_array[i] = self.array[i]
         
-        return new_array
-    
+        self.array = new_array
+            
     
     def push(self, item):
         if self.length + 1 > self.capacity:
             self.capacity = self.capacity * 2
-            self.array = self._reallocate_array()
+            self._reallocate_array()
         
         self.array[self.length] = item
         self.length += 1
@@ -71,7 +74,7 @@ class ArrayList():
     def enqueue(self, item):
         if self.length + 1 > self.capacity:
             self.capacity = self.capacity * 2
-            self.array = self._reallocate_array()
+            self._reallocate_array()
         
         for i in reversed(range(self.length+1)):
             self.array[i] = self.array[i-1]
