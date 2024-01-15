@@ -14,7 +14,7 @@ class DoublyLinkedList():
     head: Node
     tail: Node
     
-    def __init__(self, ) -> None:
+    def __init__(self) -> None:
         self.length = 0
         self.head = None
         self.tail = None

@@ -1,16 +1,27 @@
-class ArrayList():
+from typing import Generic, TypeVar
+T = TypeVar('T')
+DEFAULT_CAPACITY = 4
+
+class ArrayList(Generic[T]):
     length: int
     capacity: int
-    array: list
+    array: list[T]
     
-    def __init__(self) -> None:
-        self.capacity = 4
-        self.length = 0
-        # Only way to "allocate" an array of specific size
-        # Under the hood python may allocate a bigger array
-        self.array = [None] * self.capacity        
+    def __init__(self, item: list[T] | tuple[T] | T = None) -> None:
+        if item is None:
+            self.capacity = DEFAULT_CAPACITY
+            self.length = 0
+            self.array = [None for _ in range(self.capacity)]
+        elif isinstance(item, (list, tuple)):
+            self.capacity = len(item)
+            self.length = len(item)
+            self.array = item
+        else:
+            self.capacity = DEFAULT_CAPACITY
+            self.length = 1
+            self.array = [item] + [None for _ in range(self.capacity - 1)]
     
-    def __len__(self):
+    def __len__(self) -> int:
         return self.length
     
     def __getitem__(self, index: int):
@@ -36,7 +47,7 @@ class ArrayList():
         self.counter = 0
         return self
     
-    def __next__(self):
+    def __next__(self) -> T:
         if self.length == 0 or self.counter >= self.length:
             raise StopIteration
         
@@ -56,40 +67,43 @@ class ArrayList():
         self.array = new_array
             
     
-    def push(self, item):
+    def push(self, item) -> None:
         if self.length + 1 > self.capacity:
             self.capacity = self.capacity * 2
             self._reallocate_array()
         
         self.array[self.length] = item
         self.length += 1
+    
+    
+    def pop(self) -> T | None:
+        if self.length == 0:
+            raise IndexError('Cannot pop from empty list')
         
+        item = self.array[-1]
+        self.array[-1] = None
+        self.length -= 1
+        return item
     
-    def pop(self):
-        if self.length > 0:
-            self.array[-1] = None
-            self.length -= 1
-
     
-    def enqueue(self, item):
+    def enqueue(self, item) -> None:
         if self.length + 1 > self.capacity:
             self.capacity = self.capacity * 2
             self._reallocate_array()
         
-        for i in reversed(range(self.length+1)):
-            self.array[i] = self.array[i-1]
-        
         self.length += 1
+        
+        for i in reversed(range(self.length)):
+            self.array[i] = self.array[i-1]
         
         self.array[0] = item
     
     
-    def deque(self):        
-        item = self.array[0] if self.length != 0 else None
+    def deque(self) -> T | None:        
+        item = self.array[self.length - 1] if self.length != 0 else None
         
-        for i in range(1, self.length):
-            self.array[i-1] = self.array[i]
-            
+        self.array[self.length - 1] = None
+        
         self.length -= 1
-            
+        
         return item
