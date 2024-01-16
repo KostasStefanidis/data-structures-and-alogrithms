@@ -55,6 +55,11 @@ class ArrayList(Generic[T]):
         self.counter += 1
         return next_value
     
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, ArrayList):
+            raise TypeError(f"Cannot compare {self.__class__.__name__} object to {type(other)}")
+        return self.array == other.array
+    
     
     def _reallocate_array(self):
         print(f'Reallocating array with new capacity = {self.capacity}')
