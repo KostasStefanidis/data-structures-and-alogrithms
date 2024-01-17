@@ -1,5 +1,7 @@
 from typing import TypeVar, Generic
 from .ArrayList import ArrayList
+from .Queue import Queue
+from .Stack import Stack
 
 T = TypeVar('T', int, float)
 
@@ -17,6 +19,8 @@ class BinaryNode(Generic[T]):
 
 
 class BinaryTree(Generic[T]):
+    root: BinaryNode[T]
+    
     def __init__(self, root: BinaryNode[T]) -> None:
         self.root = root
     
@@ -26,7 +30,7 @@ class BinaryTree(Generic[T]):
     def __str__(self) -> str:
         return f'Preorder: {self.preorder()}'
     
-    def _walk_preorder(self, curr: BinaryNode[T], path: ArrayList) -> ArrayList[T]:
+    def _walk_preorder(self, curr: BinaryNode[T], path: Stack[T]) -> Stack[T]:
         if curr is None:
             return path
         path.push(curr.data)
@@ -34,7 +38,7 @@ class BinaryTree(Generic[T]):
         self._walk_preorder(curr.right, path)
         return path
     
-    def _walk_inorder(self, curr: BinaryNode[T], path: ArrayList) -> ArrayList[T]:
+    def _walk_inorder(self, curr: BinaryNode[T], path: Stack[T]) -> Stack[T]:
         if curr is None:
             return path
         self._walk_inorder(curr.left, path)
@@ -42,7 +46,7 @@ class BinaryTree(Generic[T]):
         self._walk_inorder(curr.right, path)
         return path
     
-    def _walk_postorder(self, curr: BinaryNode[T], path: ArrayList) -> ArrayList[T]:
+    def _walk_postorder(self, curr: BinaryNode[T], path: Stack[T]) -> Stack[T]:
         if curr is None:
             return path
         self._walk_postorder(curr.left, path)
@@ -50,14 +54,28 @@ class BinaryTree(Generic[T]):
         path.push(curr.data)
         return path
     
-    def preorder(self) -> ArrayList[T]:
-        return self._walk_preorder(self.root, ArrayList())
+    def preorder(self) -> Stack[T]:
+        return self._walk_preorder(self.root, Stack())
     
-    def inorder(self) -> ArrayList[T]:
-        return self._walk_inorder(self.root, ArrayList())
+    # inorder traversal of a Binary Search Tree returns the elements in sorted order
+    def inorder(self) -> Stack[T]:
+        return self._walk_inorder(self.root, Stack())
     
-    def postorder(self) -> ArrayList[T]:
-        return self._walk_postorder(self.root, ArrayList())
+    def postorder(self) -> Stack[T]:
+        return self._walk_postorder(self.root, Stack())
+    
+    
+    # def _walk_dfs(self, node: BinaryNode[T] | None, needle: T) -> bool:
+    #     if node is None:
+    #         return False
+        
+    #     if node.data == needle:
+    #         return True
+        
+    #     self._walk_dfs(node.left, needle)
+    #     self._walk_dfs(node.right, needle)
+        
+    #     return
     
     # def dfs(self, needle: T) -> bool:
     #     queue = ArrayList(self.root)
@@ -68,23 +86,17 @@ class BinaryTree(Generic[T]):
     
     def bfs(self, needle: T) -> bool:
         queue = ArrayList(self.root)
-        print(f'Initial {queue=}')
-        print(queue.capacity)
-        print(queue.length)
         
         while len(queue):
-            print(f'{queue=}')
             curr = queue.deque()
             if curr.data == needle:
                 return True
             
-            if curr.left is not None:
-                print(f'{queue=}')
+            if curr.left is not None:    
                 queue.enqueue(curr.left)
-            if curr.right is not None:
-                print(f'{queue=}')
+            if curr.right is not None:    
                 queue.enqueue(curr.right)
-
+        
         return False
     
     
@@ -225,3 +237,16 @@ class BinaryTree(Generic[T]):
             return
         
         self.root = self._insert_helper(self.root, item)
+        
+        
+    def _delete_helper(self, node: BinaryNode[T], item: T) -> BinaryNode[T]:       
+        return node
+    
+    def delete(self, item: T) -> BinaryNode[T]:
+        if not self.is_valid_bst():
+            raise ValueError('Cannot delete item in invalid Binary Search Tree')
+        
+        if self.root is None:
+            return
+        
+        return self._delete_helper(self.root, item)
