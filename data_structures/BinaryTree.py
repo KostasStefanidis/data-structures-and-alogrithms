@@ -8,8 +8,8 @@ T = TypeVar('T', int, float)
 class BinaryNode(Generic[T]):
     def __init__(self, data: T, left = None, right = None) -> None:
         self.data = data
-        self.left: BinaryNode = left
-        self.right: BinaryNode = right
+        self.left: BinaryNode[T] = left
+        self.right: BinaryNode[T] = right
     
     def __str__(self) -> str:
         return str(self.data) if self.data else ''
@@ -250,3 +250,4 @@ class BinaryTree(Generic[T]):
             return
         
         return self._delete_helper(self.root, item)
+        

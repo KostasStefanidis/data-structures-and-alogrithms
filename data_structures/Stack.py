@@ -6,7 +6,7 @@ class Node(Generic[T]):
     def __init__(self, data: T, next = None) -> None:
         self.data = data
         self.next: Node[T] = next
-        
+    
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}: {self.__str__()}"
     
@@ -26,7 +26,7 @@ class Stack(Generic[T]):
     def __init__(self) -> None:
         self.length = 0
         self.head = None
-        
+    
     def __len__(self) -> int:
         return self.length
     

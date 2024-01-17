@@ -35,7 +35,6 @@ class ArrayList(Generic[T]):
             raise IndexError('ArrayList index out of bounds')
         
         self.array[index] = value
-        self.length += 1
     
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}: {self.array}"
@@ -60,8 +59,8 @@ class ArrayList(Generic[T]):
             raise TypeError(f"Cannot compare {self.__class__.__name__} object to {type(other)}")
         return self.array == other.array
     
-    
     def _reallocate_array(self):
+        self.capacity = self.capacity * 2
         print(f'Reallocating array with new capacity = {self.capacity}')
         
         # Create new array and copy the previous values into it
@@ -70,30 +69,39 @@ class ArrayList(Generic[T]):
             new_array[i] = self.array[i]
         
         self.array = new_array
-            
-    
+
     def push(self, item) -> None:
         if self.length + 1 > self.capacity:
-            self.capacity = self.capacity * 2
             self._reallocate_array()
         
         self.array[self.length] = item
         self.length += 1
     
-    
-    def pop(self) -> T | None:
+    def pop(self, idx: int = None) -> T | None:
         if self.length == 0:
             raise IndexError('Cannot pop from empty list')
         
-        item = self.array[-1]
-        self.array[-1] = None
+        if idx == None:
+            idx = self.length - 1
+            print(type(idx), idx)
+            
+        if idx > self.length - 1:
+            raise IndexError('ArrayList index out of range')
+
+        item = self.array[idx]
+        self.array[idx] = None
+        
+        if idx < self.length - 1:
+            for i in range(idx, self.length - 1):
+                self.array[i] = self.array[i+1]
+            
+            self.array[self.length - 1] = None
+
         self.length -= 1
         return item
     
-    
     def enqueue(self, item) -> None:
         if self.length + 1 > self.capacity:
-            self.capacity = self.capacity * 2
             self._reallocate_array()
         
         self.length += 1
