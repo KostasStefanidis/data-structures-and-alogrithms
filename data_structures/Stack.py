@@ -58,7 +58,7 @@ class Stack(Generic[T]):
         else:
             node.next = self.head
             self.head = node
-        
+    
     def pop(self) -> T:       
         if self.head is None:
             return None
