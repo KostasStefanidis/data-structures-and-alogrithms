@@ -101,8 +101,8 @@ class DoublyLinkedList():
             return None
         
         return node.data
-    
-    
+
+
     def _removeNode(self, node: Node) -> T | None:
         self.length -= 1
         
