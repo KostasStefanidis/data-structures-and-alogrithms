@@ -94,12 +94,12 @@ class DoublyLinkedList():
     
     
     def get(self, idx: int) -> T | None:
-        
+
         node = self._getNode(idx)
-        
+
         if node is None:
             return None
-        
+
         return node.data
 
 
