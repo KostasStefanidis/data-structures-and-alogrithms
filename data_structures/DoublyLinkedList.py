@@ -42,6 +42,7 @@ class DoublyLinkedList():
         
         if idx > self.length:
             raise IndexError('List index out of bounds')
+        
         elif idx == self.length:
             self.append(item)
             return
@@ -75,13 +76,13 @@ class DoublyLinkedList():
         self.length += 1
     
     
-    def remove(self, item: T):
+    def remove(self) -> T | None:
         node = self._getNode(self.length - 1)
         
         if not node:
             return None
         
-        return self._removeNode()
+        return self._removeNode(node)
     
     
     def removeAt(self, idx: int) -> T | None:
@@ -129,7 +130,7 @@ class DoublyLinkedList():
         
         curr = self.head
         
-        for i in range(1, idx):
+        for _ in range(1, idx):
             if curr is None:
                 break
             
