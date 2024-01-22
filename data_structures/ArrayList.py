@@ -82,7 +82,7 @@ class ArrayList(Generic[T]):
         if self.length == 0:
             raise IndexError('Cannot pop from empty list')
         
-        if idx == None:
+        if idx is None:
             idx = self.length - 1
             print(type(idx), idx)
             
