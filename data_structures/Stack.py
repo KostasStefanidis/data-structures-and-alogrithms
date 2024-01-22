@@ -22,6 +22,7 @@ class Node(Generic[T]):
 class Stack(Generic[T]):
     length: int
     head: Node[T]
+    curr: Node[T] # used for the iterator only
     
     def __init__(self) -> None:
         self.length = 0

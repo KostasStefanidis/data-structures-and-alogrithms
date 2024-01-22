@@ -3,6 +3,11 @@ from typing import TypeVar, Generic
 T = TypeVar('T')
 
 class Node(Generic[T]):
+    """_summary_
+
+    Args:
+        Generic (_type_): _description_
+    """
     def __init__(self, data, prev = None, next = None) -> None:
         self.data: T = data
         self.prev: Node = prev
@@ -42,21 +47,22 @@ class DoublyLinkedList():
         if idx > self.length:
             raise IndexError('List index out of bounds')
         
-        elif idx == self.length:
+        if idx == self.length:
             self.append(item)
             return
-        elif idx == 0:
+        
+        if idx == 0:
             self.prepend(item)
             return
-        else:
-            # traverse list till index
-            curr = self._getNode(idx)
-            
-            node = Node(item)
-            node.next = curr
-            node.prev = curr.prev
-            curr.prev = node
-            node.prev.next = node
+        
+        # traverse list till index
+        curr = self._getNode(idx)
+        
+        node = Node(item)
+        node.next = curr
+        node.prev = curr.prev
+        curr.prev = node
+        node.prev.next = node
         
         self.length += 1
         

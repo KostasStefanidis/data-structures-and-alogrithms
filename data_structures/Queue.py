@@ -22,6 +22,7 @@ class Queue(Generic[T]):
     length: int
     head: Node[T]
     tail: Node[T]
+    curr: Node[T] # used for the iterator only
     
     def __init__(self) -> None:
         self.length = 0 

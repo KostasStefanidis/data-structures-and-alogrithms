@@ -13,6 +13,7 @@ class AbstractHeap(ABC):
     
     Heap is used to implement Priority Queue
     '''
+    
     length: int
     data: ArrayList
 
@@ -77,6 +78,7 @@ class MinHeap(AbstractHeap):
     '''
     Max Heap: parent node is always greater than child nodes
     '''
+    
     length: int
     data: ArrayList
 
@@ -111,6 +113,7 @@ class MaxHeap(AbstractHeap):
     '''
     Min Heap: parent node is always smaller than child nodes
     '''
+    
     length: int
     data: ArrayList
 

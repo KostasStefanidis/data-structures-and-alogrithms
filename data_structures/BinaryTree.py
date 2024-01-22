@@ -1,6 +1,6 @@
 from typing import TypeVar, Generic
 from .ArrayList import ArrayList
-from .Queue import Queue
+# from .Queue import Queue
 from .Stack import Stack
 
 T = TypeVar('T', int, float)
@@ -110,11 +110,11 @@ class BinaryTree(Generic[T]):
             return True
         
         # Structural check
-        if (nodeA and not nodeB) or (nodeB and not nodeA):
+        if nodeA and not nodeB or nodeB and not nodeA:
             return False
         
         # Value equallity check
-        if (nodeA.data != nodeB.data):
+        if nodeA.data != nodeB.data:
             return False
         
         # if the values of the 2 nodes are equal (nodeA.data = nodeB.data) 
@@ -239,15 +239,15 @@ class BinaryTree(Generic[T]):
         self.root = self._insert_helper(self.root, item)
         
         
-    def _delete_helper(self, node: BinaryNode[T], item: T) -> BinaryNode[T]:       
-        return node
+    # def _delete_helper(self, node: BinaryNode[T], item: T) -> BinaryNode[T]:       
+    #     return node
     
-    def delete(self, item: T) -> BinaryNode[T]:
-        if not self.is_valid_bst():
-            raise ValueError('Cannot delete item in invalid Binary Search Tree')
+    # def delete(self, item: T) -> BinaryNode[T]:
+    #     if not self.is_valid_bst():
+    #         raise ValueError('Cannot delete item in invalid Binary Search Tree')
         
-        if self.root is None:
-            return
+    #     if self.root is None:
+    #         return
         
-        return self._delete_helper(self.root, item)
+    #     return self._delete_helper(self.root, item)
         
