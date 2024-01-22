@@ -43,7 +43,7 @@ jobs:
         continue-on-error: true
         id: pylint
         run: |
-          pylint -f json2 -r y --output pylint-results.sarif $(git ls-files '*.py')
+          pylint -f json -r y --output pylint-results.sarif $(git ls-files '*.py')
 
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v3
