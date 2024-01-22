@@ -6,6 +6,7 @@ class ArrayList(Generic[T]):
     length: int
     capacity: int
     array: list[T]
+    counter: int
     
     def __init__(self, item: list[T] | tuple[T] | T = None) -> None:
         if item is None:
@@ -90,7 +91,7 @@ class ArrayList(Generic[T]):
 
         item = self.array[idx]
         self.array[idx] = None
-        
+
         if idx < self.length - 1:
             for i in range(idx, self.length - 1):
                 self.array[i] = self.array[i+1]
