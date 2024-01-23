@@ -28,7 +28,7 @@ class BinaryTree(Generic[T]):
         return f'{self.__class__.__name__}: {self.__str__()}'
     
     def __str__(self) -> str:
-        return f'Preorder: {self.preorder()}'
+        return f'Preorder: {self.preorder_traversal()}'
     
     def _walk_preorder(self, curr: BinaryNode[T], path: Stack[T]) -> Stack[T]:
         if curr is None:
@@ -54,14 +54,14 @@ class BinaryTree(Generic[T]):
         path.push(curr.data)
         return path
     
-    def preorder(self) -> Stack[T]:
+    def preorder_traversal(self) -> Stack[T]:
         return self._walk_preorder(self.root, Stack())
     
     # inorder traversal of a Binary Search Tree returns the elements in sorted order
-    def inorder(self) -> Stack[T]:
+    def inorder_traversal(self) -> Stack[T]:
         return self._walk_inorder(self.root, Stack())
     
-    def postorder(self) -> Stack[T]:
+    def postorder_traversal(self) -> Stack[T]:
         return self._walk_postorder(self.root, Stack())
     
     
@@ -74,7 +74,7 @@ class BinaryTree(Generic[T]):
         
     #     self._walk_dfs(node.left, needle)
     #     self._walk_dfs(node.right, needle)
-        
+
     #     return
     
     # def dfs(self, needle: T) -> bool:
@@ -82,7 +82,21 @@ class BinaryTree(Generic[T]):
     #     print(f'Initial {queue=}')
     #     print(queue.capacity)
     #     print(queue.length)
+    
+    def breadth_first_traversal(self) -> ArrayList[T]:
+        out = ArrayList()
+        queue = ArrayList(self.root)
         
+        while len(queue):
+            curr = queue.deque()
+            out.push(curr.data)
+            
+            if curr.left is not None:    
+                queue.enqueue(curr.left)
+            if curr.right is not None:    
+                queue.enqueue(curr.right)
+                
+        return out
     
     def bfs(self, needle: T) -> bool:
         queue = ArrayList(self.root)
@@ -196,7 +210,7 @@ class BinaryTree(Generic[T]):
     
     # runtime O(logn) - O(n) depending on how balanced is the tree
     def _find_helper(self, node: BinaryNode[T] , needle: T) -> bool:
-        if not node:
+        if node is None:
             return False
         
         if node.data == needle:
@@ -218,7 +232,7 @@ class BinaryTree(Generic[T]):
     
     
     def _insert_helper(self, node: BinaryNode[T], item: T) -> BinaryNode[T]:
-        if not node:
+        if node is None:
             return BinaryNode(item)
         
         if node.data < item:

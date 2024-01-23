@@ -77,7 +77,7 @@ class ArrayList(Generic[T]):
 
         self.array[self.length] = item
         self.length += 1
-    
+
     def pop(self, idx: int = None) -> T | None:
         if self.length == 0:
             raise IndexError('Cannot pop from empty list')
