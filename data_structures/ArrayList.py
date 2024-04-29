@@ -26,15 +26,13 @@ class ArrayList(Generic[T]):
         return self.length
 
     def __getitem__(self, index: int):
-        # TODO: Add support for negative indices
-        if index > self.length - 1:
+        if self.length == 0 or index > self.length - 1 or -index > self.length:
             raise IndexError('ArrayList index out of bounds')
 
         return self.array[index]
 
     def __setitem__(self, index: int, value):
-        # TODO: Add support for negative indices
-        if index > self.length - 1:
+        if self.length == 0 or index > self.length - 1 or -index > self.length:
             raise IndexError('ArrayList index out of bounds')
 
         self.array[index] = value
@@ -73,12 +71,14 @@ class ArrayList(Generic[T]):
 
         self.array = new_array
 
+
     def push(self, item) -> None:
         if self.length + 1 > self.capacity:
             self._reallocate_array()
 
         self.array[self.length] = item
         self.length += 1
+
 
     def pop(self, idx: int = None) -> T | None:
         if self.length == 0:
@@ -102,6 +102,7 @@ class ArrayList(Generic[T]):
 
         self.length -= 1
         return item
+
 
     def enqueue(self, item) -> None:
         if self.length + 1 > self.capacity:
