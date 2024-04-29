@@ -1,2 +1,4 @@
 ipython
 ipykernel
+pytest
+pylint

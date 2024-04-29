@@ -26,12 +26,14 @@ class ArrayList(Generic[T]):
         return self.length
 
     def __getitem__(self, index: int):
+        # TODO: Add support for negative indices
         if index > self.length - 1:
             raise IndexError('ArrayList index out of bounds')
 
         return self.array[index]
 
     def __setitem__(self, index: int, value):
+        # TODO: Add support for negative indices
         if index > self.length - 1:
             raise IndexError('ArrayList index out of bounds')
 
