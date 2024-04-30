@@ -2,3 +2,4 @@ ipython
 ipykernel
 pytest
 pylint
+pytest-cov
