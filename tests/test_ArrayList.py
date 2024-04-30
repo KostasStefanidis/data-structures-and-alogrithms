@@ -1,7 +1,6 @@
-import random
 from typing import Literal
 import pytest
-from data_structures.ArrayList import ArrayList
+from src.data_structures.ArrayList import ArrayList
 
 
 class TestArrayList():
