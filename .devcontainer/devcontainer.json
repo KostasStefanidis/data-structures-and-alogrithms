@@ -16,10 +16,11 @@
 				"magicstack.MagicPython",
 				"redhat.vscode-yaml",
 				"github.vscode-github-actions",
-				"GitHub.copilot",
-				"GitHub.copilot-chat",
+				// "GitHub.copilot",
+				// "GitHub.copilot-chat",
 				"ms-toolsai.datawrangler",
-				"esbenp.prettier-vscode"
+				"esbenp.prettier-vscode",
+				"Actionforge.actionforge"
 			]
 		}
 	},
