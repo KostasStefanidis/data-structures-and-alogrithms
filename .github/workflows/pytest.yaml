@@ -1,14 +1,14 @@
-name: Pylint
+name: Pytest
 
 on:
   push:
-    branches: [  main ]
+    branches: [ main ]
     paths:
       - '**.py'
       - '.github/workflows/pytest.yaml'
       - 'requirements.txt'
   pull_request:
-    branches: [  main ]
+    branches: [ main ]
     paths:
       - '**.py'
       - '.github/workflows/pytest.yaml'
