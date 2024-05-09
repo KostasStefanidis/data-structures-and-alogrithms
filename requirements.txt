@@ -2,4 +2,6 @@ ipython
 ipykernel
 pytest
 pylint
+black
+isort
 pytest-cov

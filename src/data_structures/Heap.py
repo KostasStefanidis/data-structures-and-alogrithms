@@ -1,19 +1,21 @@
 from abc import ABC, abstractmethod
+
 from .ArrayList import ArrayList
 
+
 class AbstractHeap(ABC):
-    '''
+    """
     Abstract base class for Heap data structure
-    
+
     Heap is a complete binary tree
-    
+
     Always balanced binary tree
-    
+
     Heap is implemented using ArrayList
-    
+
     Heap is used to implement Priority Queue
-    '''
-    
+    """
+
     length: int
     data: ArrayList
 
@@ -75,10 +77,10 @@ class AbstractHeap(ABC):
 
 
 class MinHeap(AbstractHeap):
-    '''
+    """
     Max Heap: parent node is always greater than child nodes
-    '''
-    
+    """
+
     length: int
     data: ArrayList
 
@@ -92,7 +94,7 @@ class MinHeap(AbstractHeap):
             self._swap_values(parent_idx, idx)
             self._heapify_up(parent_idx)
 
-    def _heapify_down(self, idx: int):     
+    def _heapify_down(self, idx: int):
         left_idx = self._left_child(idx)
         right_idx = self._right_child(idx)
 
@@ -110,10 +112,10 @@ class MinHeap(AbstractHeap):
 
 
 class MaxHeap(AbstractHeap):
-    '''
+    """
     Min Heap: parent node is always smaller than child nodes
-    '''
-    
+    """
+
     length: int
     data: ArrayList
 
@@ -130,7 +132,7 @@ class MaxHeap(AbstractHeap):
             self._swap_values(parent_idx, idx)
             self._heapify_up(parent_idx)
 
-    def _heapify_down(self, idx: int): 
+    def _heapify_down(self, idx: int):
         left_idx = self._left_child(idx)
         right_idx = self._right_child(idx)
 
