@@ -91,12 +91,23 @@ class ArrayList(Generic[T]):
 
         self.array[self.length] = item
         self.length += 1
+    
+    
+    def enqueue(self, item) -> None:
+        if self.length + 1 > self.capacity:
+            self._reallocate_array()
+
+        self.length += 1
+
+        for i in reversed(range(self.length)):
+            self.array[i] = self.array[i-1]
+
+        self.array[0] = item
 
 
-    def pop(self, idx: int = None) -> T | None:
-        print(self.length)
+    def remove(self, idx: int = None) -> T | None:
         if self.length == 0:
-            raise IndexError('Cannot pop from empty list')
+            raise IndexError('Cannot remove item from empty list')
 
         # pop last item in the ArrayList (like poping from a stack).
         # No items need to be moved in this case
@@ -112,32 +123,17 @@ class ArrayList(Generic[T]):
         # In case an item is popped from the middle of the list, 
         if idx < self.length - 1:
             for i in range(idx, self.length - 1):
-                self.array[i] = self.array[i+1]
+                self.array[i] = self.array[i + 1]
 
             self.array[self.length - 1] = None
 
         self.length -= 1
-        print(self.length)
         return item
+    
+    
+    def pop(self) -> T | None:
+        return self.remove(self.length - 1)
 
 
-    def enqueue(self, item) -> None:
-        if self.length + 1 > self.capacity:
-            self._reallocate_array()
-
-        self.length += 1
-
-        for i in reversed(range(self.length)):
-            self.array[i] = self.array[i-1]
-
-        self.array[0] = item
-
-    # deque is the same as pop(0)
     def deque(self) -> T | None:        
-        item = self.array[self.length - 1] if self.length != 0 else None
-
-        self.array[self.length - 1] = None
-
-        self.length -= 1
-
-        return item
+        return self.remove(0)

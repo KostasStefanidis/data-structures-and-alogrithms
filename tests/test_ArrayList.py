@@ -160,9 +160,9 @@ class TestArrayList():
             (list(range(10)), None, list(range(9)), 9),
         ]
     )
-    def test_pop(self, array_list_init, index, expected_array, expected_returned_item):
+    def test_remove(self, array_list_init, index, expected_array, expected_returned_item):
         array_list = ArrayList(array_list_init)
-        item = array_list.pop(index)
+        item = array_list.remove(index)
         assert item == expected_returned_item
         assert array_list.get_array() == expected_array
 
@@ -177,7 +177,38 @@ class TestArrayList():
             ([1,2,3], 3)
         ]
     )
-    def test_pop_index_error(self, array_list_init, index):
+    def test_remove_index_error(self, array_list_init, index):
         array_list = ArrayList(array_list_init)
         with pytest.raises(IndexError):
-            _ = array_list.pop(index)
+            _ = array_list.remove(index)
+
+
+    @pytest.mark.parametrize(
+        "array_list_init, expected_array, expected_returned_item",
+        [
+            (list(range(3)), list(range(2)), 2),
+            (list(range(5)), list(range(4)), 4),
+            (list(range(7)), list(range(6)), 6),
+            (5, [], 5),
+        ]
+    )
+    def test_pop(self, array_list_init, expected_array, expected_returned_item):
+        array_list = ArrayList(array_list_init)
+        item = array_list.pop()
+        assert item == expected_returned_item
+        assert array_list.get_array() == expected_array
+
+    
+    @pytest.mark.parametrize(
+        "array_list_init, expected_array, expected_returned_item",
+        [
+            (list(range(0, 3)), list(range(1, 3)), 0),
+            (list(range(9, 20)), list(range(10, 20)), 9),
+            (5, [], 5)
+        ]
+    )
+    def test_deque(self, array_list_init, expected_array, expected_returned_item):
+        array_list = ArrayList(array_list_init)
+        item = array_list.deque()
+        assert item == expected_returned_item
+        assert array_list.get_array() == expected_array
