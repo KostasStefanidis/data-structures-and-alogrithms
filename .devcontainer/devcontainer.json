@@ -20,7 +20,6 @@
 				// "GitHub.copilot",
 				// "GitHub.copilot-chat",
 				"ms-toolsai.datawrangler",
-				"esbenp.prettier-vscode",
 				"Actionforge.actionforge"
 			]
 		}

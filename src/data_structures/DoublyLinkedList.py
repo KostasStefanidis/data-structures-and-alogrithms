@@ -4,16 +4,21 @@ T = TypeVar("T")
 
 
 class Node(Generic[T]):
-    """_summary_
-
-    Args:
-        Generic (_type_): _description_
-    """
-
     def __init__(self, data, prev=None, next=None) -> None:
         self.data: T = data
         self.prev: Node = prev
         self.next: Node = next
+
+    def __str__(self) -> str:
+        return str(self.data) if self.data else ""
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}: {self.__str__()}"
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Node[T]):
+            raise TypeError(f"Cannot compare {self.__class__.__name__} object to {type(other)}")
+        return self.data == other.data
 
 
 class DoublyLinkedList:
