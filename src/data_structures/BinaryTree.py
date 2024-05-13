@@ -1,8 +1,6 @@
 from typing import Generic, TypeVar
 
 from .ArrayList import ArrayList
-
-# from .Queue import Queue
 from .Stack import Stack
 
 T = TypeVar("T", int, float)
