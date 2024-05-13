@@ -69,13 +69,20 @@ class ArrayList(Generic[T]):
 
         # Create new array and copy the previous values into it
         new_array = [None] * self.capacity
-        for i in range(self.length):
-            new_array[i] = self.array[i]
+        new_array[0 : self.length] = self.get_array()
 
         self.array = new_array
 
+    def shift_forward(self):
+        for i in reversed(range(self.length)):
+            self.array[i] = self.array[i - 1]
+
+    def shift_backward(self, idx):
+        for i in range(idx, self.length - 1):
+            self.array[i] = self.array[i + 1]
+
     def get_array(self):
-        return self.array[: self.length]
+        return self.array[0 : self.length]
 
     def push(self, item) -> None:
         if self.length + 1 > self.capacity:
@@ -89,10 +96,7 @@ class ArrayList(Generic[T]):
             self._reallocate_array()
 
         self.length += 1
-
-        for i in reversed(range(self.length)):
-            self.array[i] = self.array[i - 1]
-
+        self.shift_forward()
         self.array[0] = item
 
     def remove(self, idx: int = None) -> T | None:
@@ -110,11 +114,9 @@ class ArrayList(Generic[T]):
         item = self.array[idx]
         self.array[idx] = None
 
-        # In case an item is popped from the middle of the list,
+        # In case an item is removed from the middle of the list,
         if idx < self.length - 1:
-            for i in range(idx, self.length - 1):
-                self.array[i] = self.array[i + 1]
-
+            self.shift_backward(idx)
             self.array[self.length - 1] = None
 
         self.length -= 1
