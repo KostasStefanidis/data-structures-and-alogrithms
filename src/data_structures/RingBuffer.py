@@ -7,7 +7,7 @@ DEFAULT_CAPACITY = 4
 class RingBuffer(Generic[T]):
     length: int
     capacity: int
-    array: list[T]
+    _array: list[T]
     head: int = 0
     tail: int
 
@@ -15,17 +15,17 @@ class RingBuffer(Generic[T]):
         if item is None:
             self.capacity = DEFAULT_CAPACITY
             self.length = 0
-            self.array = [None for _ in range(self.capacity)]
+            self._array = [None for _ in range(self.capacity)]
             self.tail = self.capacity - 1
         elif isinstance(item, (list, tuple)):
             self.capacity = len(item)
             self.length = len(item)
-            self.array = item
+            self._array = item
             self.tail = self.length - 1
         else:
             self.capacity = DEFAULT_CAPACITY
             self.length = 1
-            self.array = [item] + [None for _ in range(self.capacity - 1)]
+            self._array = [item] + [None for _ in range(self.capacity - 1)]
             self.tail = 0
 
     def __len__(self) -> int:
@@ -44,7 +44,7 @@ class RingBuffer(Generic[T]):
                 output += "Tail -> "
             else:
                 output += " " * pad
-            output += str(self.array[i]) + ",\n"
+            output += str(self._array[i]) + ",\n"
         return output
 
     def __str__(self) -> str:
@@ -58,34 +58,40 @@ class RingBuffer(Generic[T]):
         new_array = [None] * self.capacity
         new_array[0 : self.length] = self.get_array()
 
-        self.array = new_array
+        self._array = new_array
         self.head = 0
         self.tail = self.length - 1
 
     def get_array(self):
         if self.length != 0:
             if self.head < self.tail:
-                return self.array[self.head : self.tail + 1]
+                return self._array[self.head : self.tail + 1]
             if self.head > self.tail:
-                return self.array[self.head : self.capacity] + self.array[0 : self.tail + 1]
+                return self._array[self.head : self.capacity] + self._array[0 : self.tail + 1]
             else:
-                return [self.array[self.head]]
+                return [self._array[self.head]]
         return []
+
+    def __getitem__(self, index: int):
+        if self.length == 0 or index > self.length - 1 or -index > self.length:
+            raise IndexError("ArrayList index out of bounds")
+
+        return self._array[(self.head + index) % self.capacity]
 
     def push(self, item):
         if self.length + 1 > self.capacity:
             self._reallocate_array()
 
         self.tail = (self.tail + 1) % self.capacity
-        self.array[self.tail] = item
+        self._array[self.tail] = item
         self.length += 1
 
     def pop(self):
         if self.length == 0:
             raise IndexError("Cannot remove item from empty list")
 
-        item = self.array[self.tail]
-        self.array[self.tail] = None
+        item = self._array[self.tail]
+        self._array[self.tail] = None
         self.tail = (self.tail - 1) % self.capacity
         self.length -= 1
 
@@ -98,14 +104,14 @@ class RingBuffer(Generic[T]):
         self.length += 1
         self.head = (self.head - 1) % self.capacity
 
-        self.array[self.head] = item
+        self._array[self.head] = item
 
     def deque(self):
         if self.length == 0:
             raise IndexError("Cannot remove item from empty list")
 
-        item = self.array[self.head]
-        self.array[self.head] = None
+        item = self._array[self.head]
+        self._array[self.head] = None
         self.head = (self.head + 1) % self.capacity
         self.length -= 1
 

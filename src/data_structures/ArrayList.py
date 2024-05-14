@@ -43,7 +43,6 @@ class ArrayList(Generic[T]):
         return f"{self.__class__.__name__}: {self.array}"
 
     def __str__(self) -> str:
-        # return str([elem for elem in self.array if elem is not None])
         return str(self.get_array())
 
     def __iter__(self):
@@ -61,7 +60,7 @@ class ArrayList(Generic[T]):
     def __eq__(self, other) -> bool:
         if not isinstance(other, ArrayList):
             raise TypeError(f"Cannot compare {self.__class__.__name__} object to {type(other)}")
-        return self.array == other.array
+        return self.get_array() == other.get_array()
 
     def _reallocate_array(self):
         self.capacity = self.capacity * 2
