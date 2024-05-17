@@ -158,7 +158,7 @@ class TestArrayList:
         array_list = ArrayList(array_list_init)
         item = array_list.remove(index)
         assert item == expected_returned_item
-        assert array_list.get_array() == expected_array
+        assert array_list._get_array() == expected_array
 
     @pytest.mark.parametrize(
         "array_list_init, index",
@@ -182,7 +182,7 @@ class TestArrayList:
         array_list = ArrayList(array_list_init)
         item = array_list.pop()
         assert item == expected_returned_item
-        assert array_list.get_array() == expected_array
+        assert array_list._get_array() == expected_array
 
     @pytest.mark.parametrize(
         "array_list_init, expected_array, expected_returned_item",
@@ -196,4 +196,4 @@ class TestArrayList:
         array_list = ArrayList(array_list_init)
         item = array_list.deque()
         assert item == expected_returned_item
-        assert array_list.get_array() == expected_array
+        assert array_list._get_array() == expected_array
