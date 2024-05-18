@@ -64,16 +64,16 @@ class ArrayList(Generic[T]):
 
     def _reallocate_array(self):
         self.capacity = self.capacity * 2
-        print(f"Reallocating _array with new capacity = {self.capacity}")
+        print(f"Reallocating array with new capacity = {self.capacity}")
 
-        # Create new _array and copy the previous values into it
+        # Create new array and copy the previous values into it
         new_array = [None] * self.capacity
         new_array[0 : self.length] = self._get_array()
 
         self._array = new_array
 
-    def shift_forward(self):
-        for i in reversed(range(self.length)):
+    def shift_forward(self, idx):
+        for i in reversed(range(idx, self.length)):
             self._array[i] = self._array[i - 1]
 
     def shift_backward(self, idx):
@@ -83,29 +83,23 @@ class ArrayList(Generic[T]):
     def _get_array(self):
         return self._array[0 : self.length]
 
-    def push(self, item) -> None:
+    def put(self, idx: int, item: T):
         if self.length + 1 > self.capacity:
             self._reallocate_array()
 
-        self._array[self.length] = item
         self.length += 1
+        self.shift_forward(idx)
+        self._array[idx] = item
+
+    def push(self, item) -> None:
+        self.put(self.length, item)
 
     def enqueue(self, item) -> None:
-        if self.length + 1 > self.capacity:
-            self._reallocate_array()
+        self.put(0, item)
 
-        self.length += 1
-        self.shift_forward()
-        self._array[0] = item
-
-    def remove(self, idx: int = None) -> T | None:
+    def remove(self, idx: int) -> T:
         if self.length == 0:
             raise IndexError("Cannot remove item from empty list")
-
-        # pop last item in the ArrayList (like poping from a stack).
-        # No items need to be moved in this case
-        if idx is None:
-            idx = self.length - 1
 
         if idx > self.length - 1:
             raise IndexError("ArrayList index out of range")
@@ -121,8 +115,8 @@ class ArrayList(Generic[T]):
         self.length -= 1
         return item
 
-    def pop(self) -> T | None:
+    def pop(self) -> T:
         return self.remove(self.length - 1)
 
-    def deque(self) -> T | None:
+    def deque(self) -> T:
         return self.remove(0)

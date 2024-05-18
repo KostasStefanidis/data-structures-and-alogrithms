@@ -1,6 +1,6 @@
 from typing import Generic, TypeVar
 
-from .ArrayList import ArrayList
+from ArrayList import ArrayList
 
 K = TypeVar("K")
 V = TypeVar("V")
@@ -12,6 +12,12 @@ class KeyValuePair(Generic[K, V]):
     def __init__(self, key: K, value: V) -> None:
         self.key = key
         self.value = value
+
+    def __str__(self) -> str:
+        return "{ " + str(self.key) + ": " + str(self.value) + " }"
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
 
 class HashMap(Generic[K, V]):
@@ -26,48 +32,53 @@ class HashMap(Generic[K, V]):
         self._data_container = ArrayList()
         for _ in range(self.capacity):
             self._data_container.push(ArrayList())
-        print(self._data_container)
 
     def __str__(self) -> str:
+        # TODO: Print like a Python dictionary
         return str(self._data_container)
 
-    # def __repr__(self) -> str:
+    def __repr__(self) -> str:
+        output = ""
+        for i in range(self.capacity):
+            output += f"{str(i).zfill(3)} -> {self._data_container[i]}\n"
+        return output
 
     def __getitem__(self, key: K):
         if not self._is_key_in_container(key):
-            raise ValueError(f"Key: {key} does not exist!")
+            raise KeyError(f"Key: {key} does not exist!")
 
         return self.get(key)
 
     def __setitem__(self, key: K, value: V):
-        if not self._is_key_in_container(key):
-            self.put(key, value)
-        else:
+        if self._is_key_in_container(key):
             self.update(key, value)
+        else:
+            self.put(key, value)
 
     def _is_key_in_container(self, key: K):
         idx = hash(key) % self.capacity
         return any(key == kv_pair.key for kv_pair in self._data_container[idx])
-        # for kv_pair in self._data_container[idx]:
-        #     if key == kv_pair.key:
-        #         return True
-        # return False
 
     def put(self, key: K, value: V) -> None:
+        if self._is_key_in_container(key):
+            raise KeyError(f"Key: {key} already exists!")
+
         if (self.length + 1) / self.capacity > DEFAULT_LOAD_FACTOR:
             self._reallocate_container()
 
         idx = hash(key) % self.capacity
-        print(idx)
 
         self._data_container[idx].push(KeyValuePair(key, value))
         self.length += 1
 
     def update(self, key: K, value: V):
         if not self._is_key_in_container(key):
-            raise ValueError(f"Key: {key} does not exist!")
+            raise KeyError(f"Key: {key} does not exist!")
 
-        self._data_container[hash(key) % self.capacity] = KeyValuePair(key, value)
+        idx = hash(key) % self.capacity
+        for kv_pair in self._data_container[idx]:
+            if key == kv_pair.key:
+                kv_pair.value = value
 
     def get(self, key: K):
         idx = hash(key) % self.capacity
@@ -80,13 +91,15 @@ class HashMap(Generic[K, V]):
     def remove(self, key: K):
         idx = hash(key) % self.capacity
         sub_array = self._data_container[idx]
-        for i in len(sub_array):
-            if key == sub_array[i].key:
-                kv_pair = sub_array.remove(i)
 
-        return kv_pair.value
+        for idx, kv_pair in enumerate(sub_array):
+            if key == kv_pair.key:
+                return sub_array.remove(idx)
+
+        return None
 
     def _reallocate_container(self):
+        print(f"Load factor {DEFAULT_LOAD_FACTOR} reached. Reallocating data container.")
         self.capacity = self.capacity * 2
 
         new_data_container: ArrayList[ArrayList[KeyValuePair]] = ArrayList()
@@ -103,6 +116,3 @@ class HashMap(Generic[K, V]):
                 new_data_container[idx].push(KeyValuePair(kv_pair.key, kv_pair.value))
 
         self._data_container = new_data_container
-
-
-# foo = HashMap()

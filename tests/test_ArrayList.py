@@ -148,10 +148,8 @@ class TestArrayList:
     @pytest.mark.parametrize(
         "array_list_init, index, expected_array, expected_returned_item",
         [
-            ([0, 1, 2, 3, 4], None, [0, 1, 2, 3], 4),
             ([0, 1, 2, 3, 4], 0, [1, 2, 3, 4], 0),
             ([0, 1, 2, 3, 4], 2, [0, 1, 3, 4], 2),
-            (list(range(10)), None, list(range(9)), 9),
         ],
     )
     def test_remove(self, array_list_init, index, expected_array, expected_returned_item):
