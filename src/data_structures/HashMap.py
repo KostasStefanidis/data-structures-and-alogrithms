@@ -14,7 +14,15 @@ class KeyValuePair(Generic[K, V]):
         self.value = value
 
     def __str__(self) -> str:
-        return "{ " + str(self.key) + ": " + str(self.value) + " }"
+        if isinstance(self.key, str):
+            key_str = f"'{self.key}'"
+        else:
+            key_str = str(self.key)
+        if isinstance(self.value, str):
+            value_str = f"'{self.value}'"
+        else:
+            value_str = str(self.value)
+        return f"{key_str}: {value_str}"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -34,8 +42,13 @@ class HashMap(Generic[K, V]):
             self._data_container.push(ArrayList())
 
     def __str__(self) -> str:
-        # TODO: Print like a Python dictionary
-        return str(self._data_container)
+        output = "{"
+        for sub_array in self._data_container:
+            for kv_pair in sub_array:
+                output += f", {kv_pair}"
+        output = output.replace(", ", "", 1)
+        output += "}"
+        return output
 
     def __repr__(self) -> str:
         output = ""
