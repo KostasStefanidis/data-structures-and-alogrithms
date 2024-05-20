@@ -17,11 +17,16 @@ class RingBuffer(Generic[T]):
             self.length = 0
             self._array = [None for _ in range(self.capacity)]
             self.tail = self.capacity - 1
-        elif isinstance(item, (list, tuple)):
+        elif isinstance(item, (list, tuple)) and len(item) != 1:
             self.capacity = len(item)
             self.length = len(item)
             self._array = item
             self.tail = self.length - 1
+        elif isinstance(item, (list, tuple)) and len(item) == 1:
+            self.capacity = DEFAULT_CAPACITY
+            self.length = 1
+            self._array = item + [None for _ in range(self.capacity - 1)]
+            self.tail = 0
         else:
             self.capacity = DEFAULT_CAPACITY
             self.length = 1

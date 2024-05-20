@@ -1,6 +1,6 @@
 {
     "python.testing.pytestArgs": [
-        "--cov=src", "--verbose", "--color=yes"
+        "--cov=src", "--color=yes", "-vv"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
