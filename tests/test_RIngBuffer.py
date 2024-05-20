@@ -38,6 +38,25 @@ class TestRingBuffer:
         assert buffer.tail == expected_tail
 
     @pytest.mark.parametrize(
+        "buffer_init, pop_count, expected_length, expected_tail",
+        [
+            (55, 1, 0, 3),
+            (list(range(1)), 1, 0, 3),
+            (list(range(2)), 1, 1, 0),
+            (list(range(10)), 5, 5, 4),
+            (list(range(10)), 10, 0, 9),
+        ],
+    )
+    def test_pop(self, buffer_init, pop_count, expected_length, expected_tail):
+        buffer = RingBuffer(buffer_init)
+        print(repr(buffer))
+        for _ in range(pop_count):
+            buffer.pop()
+
+        assert len(buffer) == expected_length
+        assert buffer.tail == expected_tail
+
+    @pytest.mark.parametrize(
         "buffer_init, items_to_enqueue, expected_length, expected_head",
         [
             (None, [], 0, 0),
@@ -56,23 +75,22 @@ class TestRingBuffer:
         assert buffer.head == expected_head
 
     @pytest.mark.parametrize(
-        "buffer_init, pop_count, expected_length, expected_tail",
+        "buffer_init, deque_count, expected_length, expected_head",
         [
-            (55, 1, 0, 3),
-            (list(range(1)), 1, 0, 3),
-            (list(range(2)), 1, 1, 0),
-            (list(range(10)), 5, 5, 4),
-            (list(range(10)), 10, 0, 9),
+            (55, 1, 0, 1),
+            (list(range(1)), 1, 0, 1),
+            (list(range(2)), 1, 1, 1),
+            (list(range(10)), 5, 5, 5),
+            (list(range(10)), 10, 0, 0),
         ],
     )
-    def test_pop(self, buffer_init, pop_count, expected_length, expected_tail):
+    def test_deque(self, buffer_init, deque_count, expected_length, expected_head):
         buffer = RingBuffer(buffer_init)
-        print(repr(buffer))
-        for _ in range(pop_count):
-            buffer.pop()
+        for _ in range(deque_count):
+            buffer.deque()
 
         assert len(buffer) == expected_length
-        assert buffer.tail == expected_tail
+        assert buffer.head == expected_head
 
     def test_scenario1(self):
         buffer = RingBuffer()
