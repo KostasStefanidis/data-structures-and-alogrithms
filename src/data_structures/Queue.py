@@ -1,29 +1,14 @@
 from typing import Generic, TypeVar
 
+from .Node import Node
+
 T = TypeVar("T")
-
-
-class Node(Generic[T]):
-    def __init__(self, data: T, next=None) -> None:
-        self.data = data
-        self.next: Node[T] = next
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}: {self.__str__()}"
-
-    def __str__(self) -> str:
-        return str(self.data)
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Node[T]):
-            raise TypeError(f"Cannot compare {self.__class__.__name__} object to {type(other)}")
-        return self.data == other.data
 
 
 class Queue(Generic[T]):
     length: int
-    head: Node[T]
-    tail: Node[T]
+    head: Node[T] | None
+    tail: Node[T] | None
     curr: Node[T]  # used for the iterator only
 
     def __init__(self) -> None:
@@ -77,4 +62,4 @@ class Queue(Generic[T]):
         return head.data
 
     def peek(self) -> T | None:
-        return self.head.data or None
+        return self.head.data if self.head else None

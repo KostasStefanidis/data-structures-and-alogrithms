@@ -1,30 +1,14 @@
 from typing import Generic, TypeVar
 
+from .Node import DoublyLinkedNode
+
 T = TypeVar("T")
 
 
-class Node(Generic[T]):
-    def __init__(self, data, prev=None, next=None) -> None:
-        self.data: T = data
-        self.prev: Node = prev
-        self.next: Node = next
-
-    def __str__(self) -> str:
-        return str(self.data) if self.data else ""
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}: {self.__str__()}"
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Node[T]):
-            raise TypeError(f"Cannot compare {self.__class__.__name__} object to {type(other)}")
-        return self.data == other.data
-
-
-class DoublyLinkedList:
+class DoublyLinkedList(Generic[T]):
     length: int
-    head: Node
-    tail: Node
+    head: DoublyLinkedNode[T] | None
+    tail: DoublyLinkedNode[T] | None
 
     def __init__(self) -> None:
         self.length = 0
@@ -37,8 +21,8 @@ class DoublyLinkedList:
     def __str__(self) -> str:
         return self.__repr__()
 
-    def prepend(self, item):
-        node = Node(item)
+    def prepend(self, item: T) -> None:
+        node = DoublyLinkedNode(item)
 
         self.length += 1
 
@@ -50,7 +34,7 @@ class DoublyLinkedList:
         self.head.prev = node
         self.head = node
 
-    def insertAt(self, idx: int, item: T):
+    def insertAt(self, idx: int, item: T) -> None:
 
         if idx > self.length:
             raise IndexError("List index out of bounds")
@@ -66,19 +50,22 @@ class DoublyLinkedList:
         # traverse list till index
         curr = self._getNode(idx)
 
-        node = Node(item)
+        node = DoublyLinkedNode(item)
         node.next = curr
         node.prev = curr.prev
         curr.prev = node
-        node.prev.next = node
+        if node.prev:
+            node.prev.next = node
 
         self.length += 1
 
-    def append(self, item: T):
-        node = Node(item)
+    def append(self, item: T) -> None:
+        node = DoublyLinkedNode(item)
+
+        self.length += 1
 
         if self.tail is None:
-            self.head = self.tail = None
+            self.head = self.tail = node
             return
 
         self.tail.next = node
@@ -86,9 +73,10 @@ class DoublyLinkedList:
 
         self.tail = node
 
-        self.length += 1
-
     def remove(self) -> T | None:
+        if self.length == 0:
+            return None
+
         node = self._getNode(self.length - 1)
 
         if not node:
@@ -97,6 +85,9 @@ class DoublyLinkedList:
         return self._removeNode(node)
 
     def removeAt(self, idx: int) -> T | None:
+        if idx >= self.length or idx < 0:
+            raise IndexError("List index out of bounds")
+
         node = self._getNode(idx)
 
         if not node:
@@ -105,6 +96,8 @@ class DoublyLinkedList:
         return self._removeNode(node)
 
     def get(self, idx: int) -> T | None:
+        if idx >= self.length or idx < 0:
+            raise IndexError("List index out of bounds")
 
         node = self._getNode(idx)
 
@@ -113,12 +106,13 @@ class DoublyLinkedList:
 
         return node.data
 
-    def _removeNode(self, node: Node) -> T | None:
-        self.length -= 1
-
+    def _removeNode(self, node: DoublyLinkedNode[T]) -> T | None:
         if self.length == 0:
-            self.head = self.tail = None
+            # self.head = self.tail = None
             return
+
+        self.length -= 1
+        out = node.data
 
         if node == self.head:
             self.head = node.next
@@ -132,13 +126,15 @@ class DoublyLinkedList:
         if node.prev:
             node.prev.next = node.next
 
-    def _getNode(self, idx: int) -> Node | None:
-        if idx > self.length:
+        return out
+
+    def _getNode(self, idx: int) -> DoublyLinkedNode[T] | None:
+        if idx >= self.length or idx < 0:
             raise IndexError("List index out of bounds")
 
         curr = self.head
 
-        for _ in range(1, idx):
+        for _ in range(idx):
             if curr is None:
                 break
 

@@ -1,22 +1,10 @@
 from typing import Generic, TypeVar
 
 from .ArrayList import ArrayList
+from .Node import BinaryNode
 from .Stack import Stack
 
 T = TypeVar("T", int, float)
-
-
-class BinaryNode(Generic[T]):
-    def __init__(self, data: T, left=None, right=None) -> None:
-        self.data = data
-        self.left: BinaryNode[T] = left
-        self.right: BinaryNode[T] = right
-
-    def __str__(self) -> str:
-        return str(self.data) if self.data else ""
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}: {self.__str__()}"
 
 
 class BinaryTree(Generic[T]):

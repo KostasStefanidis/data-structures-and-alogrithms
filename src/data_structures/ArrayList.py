@@ -15,10 +15,12 @@ class ArrayList(Generic[T]):
             self.capacity = DEFAULT_CAPACITY
             self.length = 0
             self._array = [None for _ in range(self.capacity)]
+
         elif isinstance(item, (list, tuple)):
             self.capacity = len(item)
             self.length = len(item)
             self._array = item
+
         else:
             self.capacity = DEFAULT_CAPACITY
             self.length = 1
@@ -59,7 +61,8 @@ class ArrayList(Generic[T]):
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, ArrayList):
-            raise TypeError(f"Cannot compare {self.__class__.__name__} object to {type(other)}")
+            raise TypeError(
+                f"Cannot compare {self.__class__.__name__} object to {type(other)}")
         return self._get_array() == other._get_array()
 
     def _reallocate_array(self):
@@ -68,7 +71,7 @@ class ArrayList(Generic[T]):
 
         # Create new array and copy the previous values into it
         new_array = [None] * self.capacity
-        new_array[0 : self.length] = self._get_array()
+        new_array[0: self.length] = self._get_array()
 
         self._array = new_array
 
@@ -81,7 +84,7 @@ class ArrayList(Generic[T]):
             self._array[i] = self._array[i + 1]
 
     def _get_array(self):
-        return self._array[0 : self.length]
+        return self._array[0: self.length]
 
     def put(self, idx: int, item: T):
         if self.length + 1 > self.capacity:

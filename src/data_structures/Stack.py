@@ -1,23 +1,8 @@
 from typing import Generic, TypeVar
 
+from .Node import Node
+
 T = TypeVar("T")
-
-
-class Node(Generic[T]):
-    def __init__(self, data: T, next=None) -> None:
-        self.data = data
-        self.next: Node[T] = next
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}: {self.__str__()}"
-
-    def __str__(self) -> str:
-        return str(self.data)
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Node[T]):
-            raise TypeError(f"Cannot compare {self.__class__.__name__} object to {type(other)}")
-        return self.data == other.data
 
 
 class Stack(Generic[T]):

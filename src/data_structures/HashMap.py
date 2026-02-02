@@ -1,6 +1,6 @@
 from typing import Generic, TypeVar
 
-from ArrayList import ArrayList
+from .ArrayList import ArrayList
 
 K = TypeVar("K")
 V = TypeVar("V")
@@ -107,12 +107,14 @@ class HashMap(Generic[K, V]):
 
         for idx, kv_pair in enumerate(sub_array):
             if key == kv_pair.key:
+                self.length -= 1
                 return sub_array.remove(idx)
 
         return None
 
     def _reallocate_container(self):
-        print(f"Load factor {DEFAULT_LOAD_FACTOR} reached. Reallocating data container.")
+        print(
+            f"Load factor {DEFAULT_LOAD_FACTOR} reached. Reallocating data container.")
         self.capacity = self.capacity * 2
 
         new_data_container: ArrayList[ArrayList[KeyValuePair]] = ArrayList()
@@ -126,6 +128,7 @@ class HashMap(Generic[K, V]):
 
             for kv_pair in item:
                 idx = hash(kv_pair.key) % self.capacity
-                new_data_container[idx].push(KeyValuePair(kv_pair.key, kv_pair.value))
+                new_data_container[idx].push(
+                    KeyValuePair(kv_pair.key, kv_pair.value))
 
         self._data_container = new_data_container
