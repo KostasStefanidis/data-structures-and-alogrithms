@@ -1,6 +1,6 @@
 {
-	"name": "Python 3.10",
-	"image": "mcr.microsoft.com/devcontainers/python:3.10",
+	"name": "Python 3.12",
+	"image": "mcr.microsoft.com/devcontainers/python:3.12",
 	"shutdownAction": "none",
     "updateRemoteUserUID": true,
 
@@ -17,9 +17,9 @@
 				"magicstack.MagicPython",
 				"redhat.vscode-yaml",
 				"github.vscode-github-actions",
-				// "GitHub.copilot",
-				// "GitHub.copilot-chat",
-				// "ms-toolsai.datawrangler",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"ms-toolsai.datawrangler",
 				"Actionforge.actionforge"
 			]
 		}
@@ -27,11 +27,12 @@
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers/features/github-cli": {},
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
-		"ghcr.io/devcontainers-contrib/features/act:1": {}
-		// "ghcr.io/devcontainers/features/aws-cli:1": {},
-		// "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1.1.0": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+			"moby": false
+		},
+		"ghcr.io/devcontainers-extra/features/act:1": {}
 	},
 
 	"postCreateCommand": "pip3 install --upgrade pip && if [ -f requirements.txt ]; then pip install -r requirements.txt; fi",
