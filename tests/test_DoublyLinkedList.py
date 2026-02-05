@@ -153,7 +153,7 @@ class TestDoublyLinkedList:
         """Test removing from list with one element."""
         dll = DoublyLinkedList()
         dll.prepend(5)
-        result = dll.remove()
+        _ = dll.remove()
         # Note: _removeNode doesn't return the data, it returns None
         assert dll.length == 0
         # After removal, head and tail should be None (but due to bug they remain)

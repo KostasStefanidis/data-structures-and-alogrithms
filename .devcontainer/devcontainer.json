@@ -20,7 +20,7 @@
 				"GitHub.copilot",
 				"GitHub.copilot-chat",
 				"ms-toolsai.datawrangler",
-				"Actionforge.actionforge"
+                "github.vscode-github-actions"
 			]
 		}
 	},
