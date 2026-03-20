@@ -1,19 +1,30 @@
 name: Pytest
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches:
+      - develop
+      - main
     paths:
-      - '**.py'
+      - '**/*.py'
       - '.github/workflows/pytest.yaml'
       - 'requirements.txt'
   pull_request:
-    branches: [ main ]
+    branches:
+      - develop
+      - main
     paths:
-      - '**.py'
+      - '**/*.py'
       - '.github/workflows/pytest.yaml'
       - 'requirements.txt'
-  workflow_dispatch:
+  schedule:
+    # Scheduled workflows will only run on the default branch (main)
+    - cron: '30 0 1 1/2 *' # every 2 months on the first day at 00:30
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # When calling a reusable workflow that needs elevated permissions, these permissions
 # must be explicitly specified in the calling workflow.
