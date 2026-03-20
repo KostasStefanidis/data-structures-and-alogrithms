@@ -39,3 +39,11 @@ jobs:
     uses: KostasStefanidis/github-workflows/.github/workflows/pylint.yaml@main
     with:
       python_version: ${{ matrix.python-version }}
+
+  pull-request:
+    needs: pylint
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if Pylint passed
+        run: echo "Pylint passed for all Python versions."
