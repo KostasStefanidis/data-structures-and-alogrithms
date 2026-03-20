@@ -7,16 +7,26 @@ on:
       - main
       - develop
     paths:
-      - '**.py'
+      - '**/*.py'
       - '.github/workflows/pylint.yaml'
       - 'requirements.txt'
   pull_request:
     branches:
-      - feature/*
+      - develop
+      - main
     paths:
-      - '**.py'
+      - '**/*.py'
       - '.github/workflows/pylint.yaml'
       - 'requirements.txt'
+  schedule:
+    # Scheduled workflows will only run on the default branch (main)
+    - cron: '30 0 1 1/2 *' # every 2 months on the first day at 00:30
+
+run-name: Pylint triggered by ${{ github.actor }}, ${{ github.event_name }} on branch ${{ github.ref }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 # When calling a reusable workflow that needs elevated permissions, these permissions
 # must be explicitly specified in the calling workflow.
@@ -49,4 +59,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if Pylint passed
-        run: echo "Pylint passed for all Python versions!!!"
+        run: sh "sleep 5m"
