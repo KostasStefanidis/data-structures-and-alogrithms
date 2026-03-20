@@ -24,7 +24,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request'}}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # When calling a reusable workflow that needs elevated permissions, these permissions
 # must be explicitly specified in the calling workflow.

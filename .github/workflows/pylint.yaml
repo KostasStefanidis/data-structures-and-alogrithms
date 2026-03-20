@@ -59,4 +59,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if Pylint passed
-        run: sh "sleep 5m"
+        run: sh -c 'sleep 5m'
