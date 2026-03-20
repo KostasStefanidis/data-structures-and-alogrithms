@@ -49,4 +49,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if Pylint passed
-        run: echo "Pylint passed for all Python versions!!"
+        run: echo "Pylint passed for all Python versions!!!"
